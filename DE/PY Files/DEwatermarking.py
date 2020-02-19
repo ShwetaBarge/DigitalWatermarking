@@ -23,17 +23,18 @@ class watermarking():
     :param wavelet:
     :param level:
     """
-    def __init__(self, watermark_path="watermark1.jpg", ratio=0.06, wavelet="haar",
-                 level=2):
+    def __init__(self, watermark_path="watermark1.jpg", ratio=0.1, wavelet="haar",
+                 level=2, x = [0.1]):
         self.level = level
         self.wavelet = wavelet
-        self.ratio = ratio
+        self.ratio = x[0]
         self.shape_watermark = cv2.imread(watermark_path, 0).shape
-        print("Shape", self.shape_watermark)
+        #print("Shape", self.shape_watermark)
         self.W_components = Components()
         self.img_components = Components()
         self.W_components.Coefficients, self.W_components.U, \
         self.W_components.S, self.W_components.V = self.calculate(watermark_path)
+        self.x = x
         #self.W_ndarr = cv2.imread(watermark_path,0)
         #print("watermark", self.W_ndarr.shape)
 
@@ -95,13 +96,14 @@ class watermarking():
         img = cv2.resize(img, self.shape_watermark)
         img_components = Components() #watermarked image
         img_components.Coefficients, img_components.U, img_components.S, img_components.V = self.calculate(img)
-        ratio_ = self.ratio if not ratio else ratio
-        self.S_W = (img_components.S - self.img_components.S) / ratio_
+        ratio_ = self.ratio if not self.x[0] else ratio
+        self.S_W = (img_components.S - self.img_components.S) / self.x[0]
         watermark_extracted = self.recover("W")
         cv2.imwrite(extracted_watermark_path, watermark_extracted)
 
     def embed(self):
-        self.S_img = self.img_components.S + self.ratio * self.W_components.S * \
+        #print("Level: ", self.level)
+        self.S_img = self.img_components.S + self.x[0] * self.W_components.S * \
                                              (self.img_components.S.max() / self.W_components.S.max())
 
     def psnr_cal(self, img1="lena.jpg" , img2="watermarked_lena.jpg"):
@@ -109,10 +111,7 @@ class watermarking():
         im2 = cv2.imread('watermarked_lena.jpg')
         # Compute PSNR over tf.uint8 Tensors.
         psnr1 = skimage.metrics.peak_signal_noise_ratio(im1, im2)
-        print(psnr1)
+        return psnr1
 
-if __name__ == '__main__':
-    watermarking = watermarking(level=3)
-    watermarking.watermark()
-    watermarking.extracted()
-    watermarking.psnr_cal()
+
+

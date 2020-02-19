@@ -6,7 +6,6 @@
 import cv2
 import pywt
 import numpy as np
-import skimage.metrics
 
 
 class Components():
@@ -23,7 +22,7 @@ class watermarking():
     :param wavelet:
     :param level:
     """
-    def __init__(self, watermark_path="watermark1.jpg", ratio=0.06, wavelet="haar",
+    def __init__(self, watermark_path="watermark1.jpg", ratio=0.1, wavelet="haar",
                  level=2):
         self.level = level
         self.wavelet = wavelet
@@ -104,12 +103,6 @@ class watermarking():
         self.S_img = self.img_components.S + self.ratio * self.W_components.S * \
                                              (self.img_components.S.max() / self.W_components.S.max())
 
-    def psnr_cal(self, img1="lena.jpg" , img2="watermarked_lena.jpg"):
-        im1 = cv2.imread('lena.jpg')
-        im2 = cv2.imread('watermarked_lena.jpg')
-        # Compute PSNR over tf.uint8 Tensors.
-        psnr1 = skimage.metrics.peak_signal_noise_ratio(im1, im2)
-        print(psnr1)
 
 if __name__ == '__main__':
     watermarking = watermarking(level=3)
