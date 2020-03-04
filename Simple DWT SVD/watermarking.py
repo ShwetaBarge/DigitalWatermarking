@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time    : 14/04/2017 14:46
-# @Author  : Luke
-# @Software: PyCharm
+
 
 import cv2
 import pywt
@@ -17,12 +16,6 @@ class Components():
 
 
 class watermarking():
-    """
-    :param watermark_path:
-    :param ratio:
-    :param wavelet:
-    :param level:
-    """
     def __init__(self, watermark_path="watermark1.jpg", ratio=0.06, wavelet="haar",
                  level=2):
         self.level = level
