@@ -77,7 +77,7 @@ class watermarking():
         img_rec = self.recover("img")   #watermarked image
         cv2.imwrite(path_save, img_rec)
 
-    def extracted(self, image_path=None, ratio=None, extracted_watermark_path = None):
+    def extracted(self, image_path="watermarked_lena.jpg", ratio=None, extracted_watermark_path = "watermark_extracted.jpg"):
         '''
         Extracted the watermark from the given image.
         '''
@@ -100,8 +100,8 @@ class watermarking():
                                              (self.img_components.S.max() / self.W_components.S.max())
 
     def psnr_cal(self, img1="lena.jpg" , img2="watermarked_lena.jpg"):
-        im1 = cv2.imread('lena.jpg',0)
-        im2 = cv2.imread('watermarked_lena.jpg',0)
+        im1 = cv2.imread(img1,0)
+        im2 = cv2.imread(img2,0)
         # Compute PSNR over tf.uint8 Tensors.
         psnr = skimage.metrics.peak_signal_noise_ratio(im1, im2)
         numerator = im1.dot(im2)

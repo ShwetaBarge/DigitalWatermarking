@@ -19,7 +19,7 @@ import PIL
 #Test 1
 def add_gaussian_noise(X_imgs):
     input_image = cv2.imread(X_imgs)
-    output = cv2.GaussianBlur(input_image, (5,5), 0)
+    output = cv2.GaussianBlur(input_image, (1,1), 0)
     cv2.imwrite('gaussian_noise_attack.jpg', output)
 
 #Test 2
@@ -68,6 +68,13 @@ def rescale_test(X_img):
     input_image = cv2.imread(X_img)
     output = cv2.imread("cropped_attack.jpg")
 
+#Test 5
+def add_poisson_noise(X_img):
+    input_image = cv2.imread(X_img, 0)
+    noise = np.random.poisson(50, input_image.shape)
+    plt.hist(noise.ravel(),256,[-256,256]);plt.show()
+    output = input_image + noise
+    output = cv2.imwrite("poisson_noise_attack.jpg", output)
 
 def rotate(X_img):
     for i in range(-90,90,10):
@@ -111,3 +118,4 @@ def testing(X_img):
     print_data("Salt and Pepper Noise Attack", "salt_pepper_noise_attack.jpg", X_img)
     print_data("Rotation Attack", "rotation_attack.jpg", X_img)
     print_data("Crop Attack", "cropped_attack.jpg", X_img)
+    print_data("Poisson Noise Attack", "poisson_noise_attack.jpg", X_img)
