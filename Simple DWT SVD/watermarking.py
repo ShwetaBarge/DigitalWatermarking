@@ -110,9 +110,12 @@ class watermarking():
         # Compute PSNR over tf.uint8 Tensors.
         psnr1 = skimage.metrics.peak_signal_noise_ratio(im1, im2)
         print(psnr1)
+        
+
 
 if __name__ == '__main__':
-    watermarking = watermarking(level=3)
+    watermarking = watermarking(level=4)
     watermarking.watermark()
     watermarking.extracted()
     watermarking.psnr_cal()
+    #watermarking.nc()

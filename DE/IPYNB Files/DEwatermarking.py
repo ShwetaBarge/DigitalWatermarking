@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Time    : 14/04/2017 14:46
-# @Author  : Luke
-# @Software: PyCharm
-
+# @Author  : Shweta Barge
 import cv2
 import pywt
 import numpy as np
 import skimage.metrics
-
+from matplotlib import pyplot as plt
+import random
 
 class Components():
     Coefficients = []
@@ -17,12 +16,6 @@ class Components():
 
 
 class watermarking():
-    """
-    :param watermark_path:
-    :param ratio:
-    :param wavelet:
-    :param level:
-    """
     def __init__(self, watermark_path="watermark1.jpg", ratio=0.1, wavelet="haar",
                  level=2, x = [0.1]):
         self.level = level
@@ -40,8 +33,8 @@ class watermarking():
 
     def calculate(self, img):
         '''
-        To calculate the Coefficients and SVD components.
-        :param img: should be a numpy array or the path of the image.
+        img is either numpy array or path of Image
+        This function returns the SVD components of the image
         '''
         if isinstance(img, str):
             img = cv2.imread(img, 0)
@@ -53,7 +46,7 @@ class watermarking():
     def diag(self, s):
         '''
         To recover the singular values to be a matrix.
-        :param s: a 1D numpy array
+        s:  1D array
         '''
         S = np.zeros(self.shape_LL)
         row = min(S.shape)
@@ -107,11 +100,29 @@ class watermarking():
                                              (self.img_components.S.max() / self.W_components.S.max())
 
     def psnr_cal(self, img1="lena.jpg" , img2="watermarked_lena.jpg"):
-        im1 = cv2.imread('lena.jpg')
-        im2 = cv2.imread('watermarked_lena.jpg')
+        im1 = cv2.imread('lena.jpg',0)
+        im2 = cv2.imread('watermarked_lena.jpg',0)
         # Compute PSNR over tf.uint8 Tensors.
-        psnr1 = skimage.metrics.peak_signal_noise_ratio(im1, im2)
-        return psnr1
+        psnr = skimage.metrics.peak_signal_noise_ratio(im1, im2)
+        numerator = im1.dot(im2)
+        numerator = numerator.sum()
+        fac = 100000
+        deno1 = pow(im1.dot(im1), 0.5)
+        deno1 = deno1.sum()
+        deno2 = pow(im2.dot(im2), 0.5)
+        deno2 = deno2.sum()
+        deno = deno1 * deno2
+        if deno == 0:
+            answer = 0
+        else:
+            answer = (numerator/ deno)*fac
+        return psnr, answer
+    
+ 
+
+
+
+    
 
 
 
