@@ -19,7 +19,7 @@ import PIL
 #Test 1
 def add_gaussian_noise(X_imgs):
     input_image = cv2.imread(X_imgs)
-    output = cv2.GaussianBlur(input_image, (1,1), 0)
+    output = cv2.GaussianBlur(input_image, (5,5), 0)
     cv2.imwrite('gaussian_noise_attack.jpg', output)
 
 #Test 2

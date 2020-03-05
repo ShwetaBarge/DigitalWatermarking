@@ -75,6 +75,10 @@ class watermarking():
         self.img_components.S, self.img_components.V = self.calculate(img)
         self.embed()
         img_rec = self.recover("img")   #watermarked image
+        img_rec = cv2.GaussianBlur(img_rec, (1,1), 0)
+        input_image = cv2.imread(img)
+        input_image = cv2.GaussianBlur(input_image, (1,1), 0)
+        cv2.imwrite(img, input_image)
         cv2.imwrite(path_save, img_rec)
 
     def extracted(self, image_path="watermarked_lena.jpg", ratio=None, extracted_watermark_path = "watermark_extracted.jpg"):
@@ -92,6 +96,7 @@ class watermarking():
         ratio_ = self.ratio if not self.x[0] else ratio
         self.S_W = (img_components.S - self.img_components.S) / self.x[0]
         watermark_extracted = self.recover("W")
+        watermark_extracted = cv2.GaussianBlur(watermark_extracted, (5,5), 0)
         cv2.imwrite(extracted_watermark_path, watermark_extracted)
 
     def embed(self):
@@ -104,6 +109,7 @@ class watermarking():
         im2 = cv2.imread(img2,0)
         # Compute PSNR over tf.uint8 Tensors.
         psnr = skimage.metrics.peak_signal_noise_ratio(im1, im2)
+        # NC
         numerator = im1.dot(im2)
         numerator = numerator.sum()
         fac = 100000
