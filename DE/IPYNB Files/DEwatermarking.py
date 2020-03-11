@@ -17,7 +17,7 @@ class Components():
 
 class watermarking():
     def __init__(self, watermark_path="watermark1.jpg", ratio=0.1, wavelet="haar",
-                 level=2, x = [0.1]):
+                 level=2, x = [0.1], cover_image = "lena.jpg"):
         self.level = level
         self.wavelet = wavelet
         self.ratio = x[0]
@@ -28,6 +28,11 @@ class watermarking():
         self.W_components.Coefficients, self.W_components.U, \
         self.W_components.S, self.W_components.V = self.calculate(watermark_path)
         self.x = x
+        self.cover_imagedata = cv2.imread(cover_image,0)
+        if self.cover_imagedata.shape != (512,512):
+            self.cover_imagedata.resize(512,512)
+            cv2.imwrite(cover_image, self.cover_imagedata)
+            #print(self.cover_image.shape)
         #self.W_ndarr = cv2.imread(watermark_path,0)
         #print("watermark", self.W_ndarr.shape)
 
@@ -75,10 +80,10 @@ class watermarking():
         self.img_components.S, self.img_components.V = self.calculate(img)
         self.embed()
         img_rec = self.recover("img")   #watermarked image
-        img_rec = cv2.GaussianBlur(img_rec, (1,1), 0)
-        input_image = cv2.imread(img)
-        input_image = cv2.GaussianBlur(input_image, (1,1), 0)
-        cv2.imwrite(img, input_image)
+        #img_rec = cv2.GaussianBlur(img_rec, (1,1), 0)
+        #input_image = cv2.imread(img)
+        #input_image = cv2.GaussianBlur(input_image, (1,1), 0)
+        #cv2.imwrite(img, input_image)
         cv2.imwrite(path_save, img_rec)
 
     def extracted(self, image_path="watermarked_lena.jpg", ratio=None, extracted_watermark_path = "watermark_extracted.jpg"):
