@@ -80,11 +80,8 @@ class watermarking():
         self.img_components.S, self.img_components.V = self.calculate(img)
         self.embed()
         img_rec = self.recover("img")   #watermarked image
-        #img_rec = cv2.GaussianBlur(img_rec, (1,1), 0)
-        #input_image = cv2.imread(img)
-        #input_image = cv2.GaussianBlur(input_image, (1,1), 0)
-        #cv2.imwrite(img, input_image)
         cv2.imwrite(path_save, img_rec)
+        self.gaussian_smoothning(X_imgs = "watermarked_lena.jpg")
 
     def extracted(self, image_path="watermarked_lena.jpg", ratio=None, extracted_watermark_path = "watermark_extracted.jpg"):
         '''
@@ -130,7 +127,10 @@ class watermarking():
         return psnr, answer
     
  
-
+    def gaussian_smoothning(self, X_imgs = "watermarked_lena.jpg"):
+        input_image = cv2.imread(X_imgs)
+        output = cv2.GaussianBlur(input_image, (5,5), 0)
+        cv2.imwrite('watermarked_lena.jpg', output)
 
 
     
