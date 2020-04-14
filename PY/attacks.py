@@ -55,6 +55,20 @@ print("For the Watermark image")
 test.print_data("Rotation Attack", "watermark_extracted.jpg", "watermark_extracted_rotation.jpg")
 test.plot_image("watermark1.jpg", "watermark_extracted_rotation.jpg", "Rotation Attack ")
 
+# Compression attack
+
+test.compression_test("watermarked_lena.jpg")
+#test.plot_image("watermarked_lena.jpg", "Compressed_watermarked_lena", 'Compression Attack')
+test.print_data("Compression Attack", "Compressed_watermarked_lena.jpg", "watermarked_lena.jpg")
+
+Watermarking.extracted(image_path="Compressed_watermarked_lena.jpg",
+                       extracted_watermark_path="watermark_extracted_compression_attack.jpg")
+test.calculate_psnr_nc(img1="watermark1.jpg", img2="watermark_extracted_compression_attack.jpg")
+print("For the Watermark image")
+test.print_data("Compression Attack", "watermark_extracted.jpg", "watermark_extracted_compression_attack.jpg")
+#test.plot_image("watermark1.jpg", "watermark_extracted_compression_attack.jpg", "Compression Attack")
+
+
 # Cropping attack
 
 test.rescale_test("watermarked_lena.jpg")
@@ -80,6 +94,9 @@ print("For the Watermark image")
 test.print_data("Poisson Noise Attack", "watermark1.jpg", "watermark_extracted_poisson_noise.jpg")
 test.plot_image("watermark1.jpg", "watermark_extracted.jpg", "Poisson Noise Attack ")
 
+
+
+#testing at various degrees of rotation
 test.testing("watermarked_lena.jpg")
 
 test.rotate("watermarked_lena.jpg")

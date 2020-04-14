@@ -12,7 +12,6 @@ def cost(x):
     Watermarking = watermarking(level=3, x=x, cover_image="lena.jpg", watermark_path="watermark1.jpg")
     Watermarking.watermark()
     Watermarking.extracted()
-    test.add_gaussian_noise("watermarked_lena.jpg", output_image="watermarked_lena.jpg")
     return test.calculate_psnr_nc(img1="lena.jpg", img2="watermarked_lena.jpg")
 
 
@@ -39,6 +38,7 @@ def ensure_bounds(vec, bounds):
 # --- MAIN ---------------------------------------------------------------------+
 
 def differential_evolution(cost_func, bounds, popsize, mutate, recombination, maxiter):
+
     # --- INITIALIZE A POPULATION (step #1) ----------------+
 
     population = []
@@ -47,11 +47,11 @@ def differential_evolution(cost_func, bounds, popsize, mutate, recombination, ma
         for j in range(len(bounds)):
             indv.append(random.uniform(bounds[j][0],bounds[j][1]))
         population.append(indv)
-#    population = [[0.025],
-#                  [0.045],
-#                  [0.0675],
-#                  [0.0666]
-#                  ]
+    # population = [[0.025],
+    #               [0.045],
+    #               [0.0675],
+    #               [0.0666]
+    #               ]
 
     print("\nPOPULATION: ", population)
 
@@ -146,7 +146,7 @@ popsize = 4  # Population size, must be >= 4
 mutate = 0.015  # Mutation factor [0,2]
 recombination = 0.7  # Recombination rate [0,1]
 maxiter = 400  # Max number of generations (maxiter)
-psnr_value = 55
+psnr_value = 40
 nc_value = 0.42
 
 # --- RUN ----------------------------------------------------------------------+
